@@ -3,12 +3,14 @@ package exact;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+
+import bn.core.Assignment;
+import bn.core.Distribution;
+import bn.core.RandomVariable;
 
 public class App {
 
@@ -22,28 +24,31 @@ public class App {
 			System.err.println("You must include a valid filename! [" + filename + "] does not exist in /networks/.");
 			System.exit(2);
 		}
-		String queryvar = args[1];
-		if(queryvar.equals("true") || queryvar.equals("false") || queryvar.length() == 0) {
+		String query = args[1];
+		if(query.equals("true") || query.equals("false") || query.length() == 0) {
 			System.err.println("You must include a query variable!");
 			System.exit(3);
 		}
-		Map<String, Boolean> evidence = parseEvidence(args);
-		ExactInferer inf = new ExactInferer("./networks/" + filename, queryvar, evidence);
-		inf.print();
+		Assignment evidence = parseEvidence(args);
+		ExactInferer inf = new ExactInferer("./networks/" + filename, query, evidence);
+		Distribution d = inf.ask();
+		System.out.println("Query variable: " + query);
+		System.out.println("Evidence: " + evidence);
+		System.out.println("Variables: " + inf.bn.getVariableList());
+		System.out.println("Query distribution: " + d);
 	}
 	
-	public static Map<String, Boolean> parseEvidence(String[] args) {
-		Map<String, Boolean> evidence = new HashMap<>();
-		List<String> friends = new ArrayList<>();
+	public static Assignment parseEvidence(String[] args) {
+		Assignment evidence = new Assignment();
+		List<RandomVariable> friends = new ArrayList<>();
 		for(int i = 2; i < args.length; i++) {
 			if(args[i].equals("true") || args[i].equals("false")) {
-				boolean value = Boolean.parseBoolean(args[i]);
 				while(!friends.isEmpty()) {
-					evidence.put(friends.get(0), value);
+					evidence.put(friends.get(0), args[i]);
 					friends.remove(0);
 				}
 			} else {
-				friends.add(args[i]);
+				friends.add(new RandomVariable(args[i]));
 			}
 		}
 		return evidence;

@@ -39,7 +39,44 @@ public class Assignment extends LinkedHashMap<RandomVariable,Object> {
     public Set<RandomVariable> variableSet() {
 	return keySet();
     }
-
+    
+    /** 
+     * Returns a random variable key object directly if a matching one
+     * exists in this Assignment (and null if it does not).
+     */
+    public RandomVariable getKeyByName(String name) {
+    	for(RandomVariable key : this.keySet()) {
+    		if(key.getName().equals(name)) {
+    			return key;
+    		}
+    	}
+    	return null;
+    }
+    
+    /**
+     * Updates RV references to BN nodes.
+     * @param truth the BN list of variables
+     */
+    public void match(List<RandomVariable> truth) {
+    	for(RandomVariable v : truth) {
+    		RandomVariable mine = this.getKeyByName(v.getName());
+    		if(mine != null) {
+    			Object value = this.get(mine);
+    			this.remove(mine);
+    			this.put(v, value);
+    		}
+    	}
+    }
+    
+    public boolean verify(BayesianNetwork bn) {
+    	for(RandomVariable v : this.keySet()) {
+    		if(!bn.getVariableList().contains(v)) {
+    			return false;
+    		}
+    	}
+    	return true;
+    }
+    
     /**
      * Returns a shallow copy of this HashMap instance: the keys and
      * values themselves are not cloned.
