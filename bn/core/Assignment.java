@@ -68,9 +68,13 @@ public class Assignment extends LinkedHashMap<RandomVariable,Object> {
     	}
     }
     
-    public boolean verify(BayesianNetwork bn) {
-    	for(RandomVariable v : this.keySet()) {
-    		if(!bn.getVariableList().contains(v)) {
+    /*
+     * Returns true if all pieces of the evidence are 
+     * consistent with this assignment, false if not.
+     */
+    public boolean consistent(Assignment evidence) {
+    	for(RandomVariable v : evidence.keySet()) {
+    		if(!this.get(v).equals(evidence.get(v))) {
     			return false;
     		}
     	}

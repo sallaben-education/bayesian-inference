@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import bn.core.Assignment;
+import bn.core.Distribution;
 import bn.core.RandomVariable;
 
 public class App {
@@ -35,15 +36,17 @@ public class App {
 		}
 		Assignment evidence = parseEvidence(args);
 		ApproxInferer inf = new ApproxInferer("./networks/" + filename, samples, query, evidence);
+		Distribution d = inf.rsample();
 		System.out.println("Query variable: " + query);
 		System.out.println("Evidence: " + evidence);
 		System.out.println("Variables: " + inf.bn.getVariableList());
+		System.out.println("Query distribution: " + d);
 	}
 	
 	public static Assignment parseEvidence(String[] args) {
 		Assignment evidence = new Assignment();
 		List<RandomVariable> friends = new ArrayList<>();
-		for(int i = 2; i < args.length; i++) {
+		for(int i = 3; i < args.length; i++) {
 			if(args[i].equals("true") || args[i].equals("false")) {
 				while(!friends.isEmpty()) {
 					evidence.put(friends.get(0), args[i]);

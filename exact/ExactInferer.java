@@ -32,8 +32,8 @@ public class ExactInferer {
 			System.err.println("Input file [" + filename + "] does not have extension .xml or .bif!");
 			System.exit(4);
 		}
-		this.query = bn.getVariableByName(query);
 		evidence.match(bn.getVariableList());
+		this.query = bn.getVariableByName(query);
 		this.evidence = evidence;
 	}
 	

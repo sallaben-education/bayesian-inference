@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 
 import bn.core.Assignment;
 import bn.core.BayesianNetwork;
+import bn.core.Distribution;
 import bn.core.RandomVariable;
 import bn.parser.BIFLexer;
 import bn.parser.BIFParser;
@@ -36,9 +37,9 @@ public class ApproxInferer {
 			System.err.println("Input file [" + filename + "] does not have extension .xml or .bif!");
 			System.exit(5);
 		}
+		evidence.match(bn.getVariableList());
 		this.samples = samples;
 		this.query = bn.getVariableByName(query);
-		evidence.match(bn.getVariableList());
 		this.evidence = evidence;
 	}
 	
@@ -54,5 +55,24 @@ public class ApproxInferer {
 		return s;
 	}
 	
+	/*
+	 * Using rejection sampling, returns a distribution for the query variable 
+	 * reflecting the frequency of each value in the domain over a number 
+	 * of random samples
+	 */
+	public Distribution rsample() {
+		Distribution d = new Distribution(query);
+		for(Object obj : query.getDomain()) {
+			d.put(obj, 0);
+		}
+		for(int i = 0; i < samples; i++) {
+			Assignment x = sample();
+			if(x.consistent(evidence)) {
+				d.replace(x.get(query), d.get(x.get(query)) + 1);
+			}
+		}
+		d.normalize();
+		return d;
+	}
 	
 }
