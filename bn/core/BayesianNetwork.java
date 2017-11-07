@@ -32,7 +32,7 @@ public class BayesianNetwork {
      * corresponds to a random variable, and has parent nodes, child
      * nodes, and a conditional probability table associated with it.
      */
-    protected class Node implements Printable {
+    public class Node implements Printable {
 
 	public RandomVariable variable;
 	public List<Node> parents;
@@ -43,6 +43,21 @@ public class BayesianNetwork {
 	    this.variable = variable;
 	}
 
+	/** 
+	 * Steve Allaben
+	 * Sample variable based on its probability and "prior" values for its parents.
+	 */
+	public Object sample(Assignment evidence) {
+		Assignment possible = evidence.copy();
+		possible.put(variable, "true");
+		Random r = new Random();
+		double prob = getProb(variable, possible);
+		if(prob > r.nextDouble()) {
+			return "true";
+		}
+		return "false";
+	}
+	
 	// Printable
 
 	/**
@@ -145,7 +160,7 @@ public class BayesianNetwork {
      * Return the Node for given RandomVariable from this BayesianNetwork.
      * @throws NoSuchElementException
      */
-    protected Node getNodeForVariable(RandomVariable var) {
+    public Node getNodeForVariable(RandomVariable var) {
 	for (Node node : nodes) {
 	    if (node.variable == var) {
 		return node;
