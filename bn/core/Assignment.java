@@ -18,9 +18,10 @@ import java.util.*;
 public class Assignment extends LinkedHashMap<RandomVariable,Object> {
 
     public static final long serialVersionUID = 1L;
-
+    public double weight = 1;
+    
     public Assignment() {
-	super();
+    super();
     }
 
     /**
@@ -31,6 +32,14 @@ public class Assignment extends LinkedHashMap<RandomVariable,Object> {
 	put(var, val);
     }
 
+    /*
+     * Changes the weight of this assignment. Assignment weighting is used
+     * in weighted sampling.
+     */
+    public void setWeight(double weight) {
+    	this.weight = weight;
+    }
+    
     /**
      * Returns a Set view of the RandomVariables contained in this Assignment.
      * The set is backed by the map.

@@ -32,9 +32,10 @@ public class App {
 		Assignment evidence = parseEvidence(args);
 		ExactInferer inf = new ExactInferer("./networks/" + filename, query, evidence);
 		Distribution d = inf.ask();
-		System.out.println("Query variable: " + query);
-		System.out.println("Evidence: " + evidence);
+		System.out.println("File: " + filename);
 		System.out.println("Variables: " + inf.bn.getVariableList());
+		System.out.println("Evidence: " + evidence);
+		System.out.println("Query variable: " + query);
 		System.out.println("Query distribution: " + d);
 	}
 	

@@ -36,11 +36,15 @@ public class App {
 		}
 		Assignment evidence = parseEvidence(args);
 		ApproxInferer inf = new ApproxInferer("./networks/" + filename, samples, query, evidence);
-		Distribution d = inf.rsample();
-		System.out.println("Query variable: " + query);
-		System.out.println("Evidence: " + evidence);
+		Distribution rs = inf.rsample();
+		Distribution lw = inf.lweight();
+		System.out.println("File: " + filename);
+		System.out.println("Number of samples: " + samples);
 		System.out.println("Variables: " + inf.bn.getVariableList());
-		System.out.println("Query distribution: " + d);
+		System.out.println("Evidence: " + evidence);
+		System.out.println("Query variable: " + query);
+		System.out.println("Rejection sampling distribution: " + rs);
+		System.out.println("Likelihood weighting distribution: " + lw);
 	}
 	
 	public static Assignment parseEvidence(String[] args) {

@@ -75,4 +75,37 @@ public class ApproxInferer {
 		return d;
 	}
 	
+	/*
+	 * Returns an Assignment sampled from the prior knowledge in the BN
+	 * This Assignment has a relevant .weight: the likelihood that the event
+	 * happened, according to the evidence
+	 */
+	public Assignment wsample() {
+		List<RandomVariable> vars = bn.getVariableListTopologicallySorted();
+		Assignment s = new Assignment();
+		for(RandomVariable v : vars) {
+			if(s.containsKey(v)) {
+				s.setWeight(s.weight * bn.getProb(v, s));
+			} else {
+				s.put(v, bn.getNodeForVariable(v).sample(s));
+			}
+		}		
+		return s;
+	}
+	
+	public Distribution lweight() {
+		Distribution d = new Distribution(query);
+		for(Object obj : query.getDomain()) {
+			d.put(obj, 0);
+		}
+		for(int i = 0; i < samples; i++) {
+			Assignment x = wsample();
+			if(x.consistent(evidence)) {
+				d.replace(x.get(query), d.get(x.get(query)) + x.weight);
+			}
+		}
+		d.normalize();
+		return d;
+	}
+	
 }
