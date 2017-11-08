@@ -45,17 +45,35 @@ public class BayesianNetwork {
 
 	/** 
 	 * Steve Allaben
-	 * Sample variable based on its probability and "prior" values for its parents.
+	 * Sample variable based on its domain, probability, and "prior" values for its parents.
 	 */
 	public Object sample(Assignment evidence) {
-		Assignment possible = evidence.copy();
-		possible.put(variable, "true");
-		Random r = new Random();
-		double prob = getProb(variable, possible);
-		if(prob > r.nextDouble()) {
-			return "true";
+		Distribution d = new Distribution(variable);
+		for(Object obj : variable.getDomain()) {
+			Assignment possible = evidence.extend(variable, obj);
+			d.put(obj, getProb(variable, possible));
 		}
-		return "false";
+		return selectVar(d, new Random().nextDouble());
+	}
+	
+	public Object selectVar(Distribution d, double prob) {
+		List<Object> values = new ArrayList<>();
+		values.addAll(d.keySet());
+		double sum = 0;
+		double distance = 1;
+		Object best = null;
+		while(!values.isEmpty()) {
+			Object obj = values.remove(0);
+			double dprob = d.get(obj) + sum;
+			if(prob <= dprob) {
+				if(Math.abs(dprob - prob) <= distance) {
+					distance = Math.abs(dprob - prob);
+					best = obj;
+				}
+			}
+			sum += d.get(obj);
+		}
+		return best;
 	}
 	
 	// Printable

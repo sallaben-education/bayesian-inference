@@ -45,6 +45,7 @@ public class App {
 		System.out.println("Query variable: " + query);
 		System.out.println("Rejection sampling distribution: " + rs);
 		System.out.println("Likelihood weighting distribution: " + lw);
+		System.exit(0);
 	}
 	
 	public static Assignment parseEvidence(String[] args) {

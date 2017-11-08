@@ -90,6 +90,16 @@ public class Assignment extends LinkedHashMap<RandomVariable,Object> {
     	return true;
     }
     
+    /*
+     * Extends this Assignment to include one more RandomVariable v 
+     * with a given value.
+     */
+	public Assignment extend(RandomVariable v, Object value) {
+		Assignment extended = this.copy();
+		extended.put(v, value);
+		return extended;
+	}
+	
     /**
      * Returns a shallow copy of this HashMap instance: the keys and
      * values themselves are not cloned.

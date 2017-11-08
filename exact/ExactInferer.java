@@ -14,7 +14,7 @@ import bn.parser.*;
 
 public class ExactInferer {
 
-	BayesianNetwork bn = new BayesianNetwork();
+	BayesianNetwork bn;
 	Assignment evidence;
 	RandomVariable query;
 	
@@ -30,19 +30,18 @@ public class ExactInferer {
 			bn = bp.parseNetwork();
 		} else {
 			System.err.println("Input file [" + filename + "] does not have extension .xml or .bif!");
-			System.exit(4);
+			System.exit(5);
 		}
 		evidence.match(bn.getVariableList());
-		this.query = bn.getVariableByName(query);
 		this.evidence = evidence;
+		this.query = bn.getVariableByName(query);
 	}
 	
 	public Distribution ask() {
 		Distribution d = new Distribution(query);
 		Assignment possible;
 		for(Object value : query.getDomain()) {
-			possible = evidence.copy();
-			possible.put(query, value);
+			possible = evidence.extend(query, value);
 			d.put(value, probability(bn.getVariableListTopologicallySorted(), possible));
 		}
 		d.normalize();
@@ -62,16 +61,11 @@ public class ExactInferer {
 			double sum = 0.0;
 			Assignment possible;
 			for(Object value : first.getDomain()) {
-				possible = e.copy();
-				possible.put(first, value);
+				possible = e.extend(first, value);
 				sum += bn.getProb(first, possible) * probability(vars, possible);
 			}
 			return sum;
 		}
-	}
-	
-	public void print() {
-		bn.print();
 	}
 	
 }

@@ -22,12 +22,12 @@ public class App {
 		String filename = args[0];
 		if(!(new File("./networks/" + filename).isFile())) {
 			System.err.println("You must include a valid filename! [" + filename + "] does not exist in /networks/.");
-			System.exit(2);
+			System.exit(3);
 		}
 		String query = args[1];
 		if(query.equals("true") || query.equals("false") || query.length() == 0) {
 			System.err.println("You must include a query variable!");
-			System.exit(3);
+			System.exit(4);
 		}
 		Assignment evidence = parseEvidence(args);
 		ExactInferer inf = new ExactInferer("./networks/" + filename, query, evidence);
@@ -37,6 +37,7 @@ public class App {
 		System.out.println("Evidence: " + evidence);
 		System.out.println("Query variable: " + query);
 		System.out.println("Query distribution: " + d);
+		System.exit(0);
 	}
 	
 	public static Assignment parseEvidence(String[] args) {

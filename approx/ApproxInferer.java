@@ -18,7 +18,7 @@ import bn.parser.XMLBIFParser;
 
 public class ApproxInferer {
 	
-	BayesianNetwork bn = new BayesianNetwork();
+	BayesianNetwork bn;
 	Assignment evidence;
 	RandomVariable query;
 	int samples;
@@ -38,9 +38,9 @@ public class ApproxInferer {
 			System.exit(5);
 		}
 		evidence.match(bn.getVariableList());
-		this.samples = samples;
-		this.query = bn.getVariableByName(query);
 		this.evidence = evidence;
+		this.query = bn.getVariableByName(query);
+		this.samples = samples;
 	}
 	
 	/*
@@ -63,12 +63,12 @@ public class ApproxInferer {
 	public Distribution rsample() {
 		Distribution d = new Distribution(query);
 		for(Object obj : query.getDomain()) {
-			d.put(obj, 0);
+			d.put(obj, 0.0);
 		}
 		for(int i = 0; i < samples; i++) {
 			Assignment x = sample();
 			if(x.consistent(evidence)) {
-				d.replace(x.get(query), d.get(x.get(query)) + 1);
+				d.put(x.get(query), d.get(x.get(query)) + 1.0);
 			}
 		}
 		d.normalize();
@@ -101,11 +101,11 @@ public class ApproxInferer {
 		for(int i = 0; i < samples; i++) {
 			Assignment x = wsample();
 			if(x.consistent(evidence)) {
-				d.replace(x.get(query), d.get(x.get(query)) + x.weight);
+				d.put(x.get(query), d.get(x.get(query)) + x.weight);
 			}
 		}
 		d.normalize();
 		return d;
 	}
-	
+
 }
