@@ -34,6 +34,9 @@ public class App {
 			System.err.println("You must include a query variable!");
 			System.exit(4);
 		}
+		System.out.println("---------------------");
+		System.out.println("Approximate Inference");
+		System.out.println("* * * * * * * * * * *");
 		Assignment evidence = parseEvidence(args);
 		ApproxInferer inf = new ApproxInferer("./networks/" + filename, samples, query, evidence);
 		Distribution rs = inf.rsample();
@@ -45,21 +48,22 @@ public class App {
 		System.out.println("Query variable: " + query);
 		System.out.println("Rejection sampling distribution: " + rs);
 		System.out.println("Likelihood weighting distribution: " + lw);
+		System.out.println("---------------------");
 		System.exit(0);
 	}
 	
 	public static Assignment parseEvidence(String[] args) {
 		Assignment evidence = new Assignment();
 		List<RandomVariable> friends = new ArrayList<>();
+		boolean val = true;
 		for(int i = 3; i < args.length; i++) {
-			if(args[i].equals("true") || args[i].equals("false")) {
-				while(!friends.isEmpty()) {
-					evidence.put(friends.get(0), args[i]);
-					friends.remove(0);
-				}
-			} else {
+			if(val) {
 				friends.add(new RandomVariable(args[i]));
+			} else {
+				evidence.put(friends.get(0), args[i]);
+				friends.remove(0);
 			}
+			val = !val;
 		}
 		return evidence;
 	}
