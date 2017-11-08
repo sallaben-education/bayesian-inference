@@ -2,8 +2,6 @@ package approx;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -54,14 +52,13 @@ public class App {
 	
 	public static Assignment parseEvidence(String[] args) {
 		Assignment evidence = new Assignment();
-		List<RandomVariable> friends = new ArrayList<>();
+		RandomVariable v = null;
 		boolean val = true;
 		for(int i = 3; i < args.length; i++) {
 			if(val) {
-				friends.add(new RandomVariable(args[i]));
+				v = new RandomVariable(args[i]);
 			} else {
-				evidence.put(friends.get(0), args[i]);
-				friends.remove(0);
+				evidence.put(v, args[i]);
 			}
 			val = !val;
 		}
