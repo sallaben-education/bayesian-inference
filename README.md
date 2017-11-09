@@ -18,7 +18,7 @@
   - Example: **{ARGS}** = `dog-problem.xml bowel-problem hear-bark true`
 - **ApproxInferer** arguments are formatted as follows:
 `#SAMPLES filename.[xml/bif] QUERYVAR EVIDENCE1 value1 EVIDENCE2 value2 …`
-Example: **{ARGS}** = `10000 insurance.bif SocioEcon VehicleYear Older DrivingSkill SubStandard`
+  - Example: **{ARGS}** = `10000 insurance.bif SocioEcon VehicleYear Older DrivingSkill SubStandard`
 
 <u>How to execute program:</u>
 
