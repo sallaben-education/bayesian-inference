@@ -10,8 +10,16 @@ import bn.core.Assignment;
 import bn.core.Distribution;
 import bn.core.RandomVariable;
 
+/**
+ * 
+ * @author Steven Allaben
+ *
+ */
 public class App {
 
+	/*
+	 * Main method of package exact
+	 */
 	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
 		if(args.length < 2) {
 			System.err.println("You must include a network file and query variable!");
@@ -42,6 +50,10 @@ public class App {
 		System.exit(0);
 	}
 	
+	/*
+	 * Parses "evidence" in the form of VAR1 VAL1 VAR2 VAL2 
+	 * (after filename, query, and sample arguments).
+	 */
 	public static Assignment parseEvidence(String[] args) {
 		Assignment evidence = new Assignment();
 		RandomVariable v = null;

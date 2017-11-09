@@ -12,12 +12,21 @@ import org.xml.sax.SAXException;
 import bn.core.*;
 import bn.parser.*;
 
+/**
+ * 
+ * @author Steven Allaben
+ *
+ */
 public class ExactInferer {
 
 	BayesianNetwork bn;
 	Assignment evidence;
 	RandomVariable query;
 	
+	/*
+	 * Constructor. Reads in a .xml or .bif file from the filesystem in the /networks/ folder.
+	 * Uses Prof. Ferguson's parser code to interpret the network file as a BayesianNetwork.
+	 */
 	public ExactInferer(String filename, String query, Assignment evidence) 
 			throws IOException, ParserConfigurationException, SAXException {
 		if(filename.endsWith(".xml")) {
@@ -37,6 +46,9 @@ public class ExactInferer {
 		this.query = bn.getVariableByName(query);
 	}
 	
+	/*
+	 * ENUMERATION-ASK algorithm from AIMA
+	 */
 	public Distribution ask() {
 		Distribution d = new Distribution(query);
 		Assignment possible;
@@ -48,6 +60,9 @@ public class ExactInferer {
 		return d;
 	}
 	
+	/*
+	 * ENUMERATION-ALL algorithm from AIMA
+	 */
 	public double probability(List<RandomVariable> variables, Assignment e) {
 		if(variables.isEmpty()) {
 			return 1.0;

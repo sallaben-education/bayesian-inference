@@ -16,6 +16,11 @@ import bn.parser.BIFLexer;
 import bn.parser.BIFParser;
 import bn.parser.XMLBIFParser;
 
+/**
+ * 
+ * @author Steven Allaben
+ *
+ */
 public class ApproxInferer {
 	
 	BayesianNetwork bn;
@@ -23,6 +28,10 @@ public class ApproxInferer {
 	RandomVariable query;
 	int samples;
 	
+	/*
+	 * Constructor. Reads in a .xml or .bif file from the filesystem in the /networks/ folder.
+	 * Uses Prof. Ferguson's parser code to interpret the network file as a BayesianNetwork.
+	 */
 	public ApproxInferer(String filename, int samples, String query, Assignment evidence) 
 			throws IOException, ParserConfigurationException, SAXException {
 		if(filename.endsWith(".xml")) {
@@ -44,7 +53,7 @@ public class ApproxInferer {
 	}
 	
 	/*
-	 * Returns an Assignment sampled from the prior knowledge in the BN
+	 * Returns an Assignment randomly sampled from the prior knowledge in the BN
 	 */
 	public Assignment sample() {
 		List<RandomVariable> vars = bn.getVariableListTopologicallySorted();
@@ -93,6 +102,11 @@ public class ApproxInferer {
 		return s;
 	}
 	
+	/*
+	 * Using likelihood weighting, returns a distribution for the query variable 
+	 * reflecting the frequency of each value in the domain over a number 
+	 * of samples generated from the evidence values
+	 */
 	public Distribution lweight() {
 		Distribution d = new Distribution(query);
 		for(Object obj : query.getDomain()) {

@@ -10,8 +10,16 @@ import bn.core.Assignment;
 import bn.core.Distribution;
 import bn.core.RandomVariable;
 
+/**
+ * 
+ * @author Steven Allaben
+ *
+ */
 public class App {
 
+	/*
+	 * Main method of package approx
+	 */
 	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
 		if(args.length < 3) {
 			System.err.println("You must include a network file, number of samples, and query variable!");
@@ -44,12 +52,31 @@ public class App {
 		System.out.println("Variables: " + inf.bn.getVariableList());
 		System.out.println("Evidence: " + evidence);
 		System.out.println("Query variable: " + query);
-		System.out.println("Rejection sampling distribution: " + rs);
-		System.out.println("Likelihood weighting distribution: " + lw);
+		System.out.println("Rejection sampling distribution: " + 
+				(check(rs) ? rs : "{More samples necessary to compute distribution!}"));
+		System.out.println("Likelihood weighting distribution: " + 
+				(check(lw) ? lw : "{More samples necessary to compute distribution!}"));
 		System.out.println("---------------------");
 		System.exit(0);
 	}
 	
+	/*
+	 * Checks each value in the distribution to ensure that at least one sample has been
+	 * recorded for that value. If none have, the distribution was not able to be computed.
+	 */
+	public static boolean check(Distribution d) {
+		for(Double value : d.values()) {
+			if(Double.isNaN(value)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/*
+	 * Parses "evidence" in the form of VAR1 VAL1 VAR2 VAL2 
+	 * (after filename, query, and sample arguments).
+	 */
 	public static Assignment parseEvidence(String[] args) {
 		Assignment evidence = new Assignment();
 		RandomVariable v = null;

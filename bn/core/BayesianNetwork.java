@@ -56,6 +56,10 @@ public class BayesianNetwork {
 		return selectVar(d, new Random().nextDouble());
 	}
 	
+	/*
+	 * Scalable solution to sample a choice 
+	 * with frequency equal to the choice's probability.
+	 */
 	public Object selectVar(Distribution d, double prob) {
 		List<Object> values = new ArrayList<>();
 		values.addAll(d.keySet());
