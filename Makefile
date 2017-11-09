@@ -14,11 +14,9 @@ BNFILES = ./source/bn/*/*.java
 
 exact: $(EXACTFILES)
 	$(JC) $(JFLAGS) $(EXACTFILES) $(BNFILES)
-	#java -cp ./build exact/App aima-alarm.xml B J true M true
 
 approx: $(APPROXFILES)
 	$(JC) $(JFLAGS) $(APPROXFILES) $(BNFILES)
-	#java -cp ./build approx/App 10000 aima-alarm.xml B J true M true
 
 clean:
 	rm -f ./build/exact/*.class
