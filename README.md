@@ -14,10 +14,10 @@
 ***Argument formatting {ARGS}:***
 
 - **ExactInferer** arguments are formatted as follows:
-`filename.[xml/bif] QUERYVAR EVIDENCE1 value1 EVIDENCE2 value2 …`
+  - `filename.[xml/bif] QUERYVAR EVIDENCE1 value1 EVIDENCE2 value2 …`
   - Example: **{ARGS}** = `dog-problem.xml bowel-problem hear-bark true`
 - **ApproxInferer** arguments are formatted as follows:
-`#SAMPLES filename.[xml/bif] QUERYVAR EVIDENCE1 value1 EVIDENCE2 value2 …`
+  - `#SAMPLES filename.[xml/bif] QUERYVAR EVIDENCE1 value1 EVIDENCE2 value2 …`
   - Example: **{ARGS}** = `10000 insurance.bif SocioEcon VehicleYear Older DrivingSkill SubStandard`
 
 ***How to execute program:***
